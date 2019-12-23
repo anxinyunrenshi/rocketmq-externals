@@ -1,20 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
+
+	<!-- name的值是变量的名称，value的值时变量定义的值。通过定义的值会被插入到logger上下文中。定义变量后，可以使“${}”来使用变量。 -->
+	<springProperty scope="context" name="logging.path" source="logging.path" defaultValue="/var/www/logs/java"/>
+	<springProperty scope="context" name="logging.name" source="spring.application.name" defaultValue="rocketmq-console"/>
+
 	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
 		<encoder charset="UTF-8">
 			<pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}] %5p %m%n</pattern>
 		</encoder>
 	</appender>
 
-	<appender name="FILE"
-		class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>${user.home}/logs/consolelogs/rocketmq-console.log</file>
+	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${logging.path}/${logging.name}/rocketmq-console.log</file>
 		<append>true</append>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<fileNamePattern>${user.home}/logs/consolelogs/rocketmq-console-%d{yyyy-MM-dd}.%i.log
+			<fileNamePattern>${logging.path}/${logging.name}/rocketmq-console-%d{yyyy-MM-dd}.%i.log
 			</fileNamePattern>
-			<timeBasedFileNamingAndTriggeringPolicy
-				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+			<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
 				<maxFileSize>104857600</maxFileSize>
 			</timeBasedFileNamingAndTriggeringPolicy>
 			<MaxHistory>10</MaxHistory>
